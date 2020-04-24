@@ -1,0 +1,2760 @@
+---
+swagger: "2.0"
+info:
+  description: "RESTFull API for interacting with AKEYLESS Proxy Vault"
+  version: "0.1.1"
+  title: "AKEYLESS Proxy API"
+  contact:
+    name: "Refael Angel"
+    url: "https://www.akeyless.io"
+    email: "refael@akeyless.io"
+  license:
+    name: "Apache 2.0"
+    url: "http://www.apache.org/licenses/LICENSE-2.0"
+host: "127.0.0.1:8080"
+basePath: "/"
+schemes:
+- "https"
+consumes:
+- "application/json"
+produces:
+- "application/json"
+paths:
+  /assoc-role-am:
+    post:
+      summary: "Create an association between role and auth method"
+      description: "Create an association between role and auth method\nOptions:\n\
+        \  role-name -    The role name to associate\n  am-name -    The auth method\
+        \ name to associate\n  sub-claims -    key/val of sub claims, ex. group=admins,developers\n\
+        \  token -    Access token"
+      operationId: "assocRoleAm"
+      parameters:
+      - name: "role-name"
+        in: "query"
+        description: "The role name to associate"
+        required: true
+        type: "string"
+        x-exportParamName: "RoleName"
+      - name: "am-name"
+        in: "query"
+        description: "The auth method name to associate"
+        required: true
+        type: "string"
+        x-exportParamName: "AmName"
+      - name: "sub-claims"
+        in: "query"
+        description: "key/val of sub claims, ex. group=admins,developers"
+        required: false
+        type: "string"
+        x-exportParamName: "SubClaims"
+        x-optionalDataType: "String"
+      - name: "token"
+        in: "query"
+        description: "Access token"
+        required: true
+        type: "string"
+        x-exportParamName: "Token"
+      responses:
+        200:
+          description: "response"
+          schema:
+            $ref: "#/definitions/ReplyObj"
+        400:
+          description: "Invalid request"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        401:
+          description: "Unauthorized access"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        403:
+          description: "Forbidden access"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        404:
+          description: "Item not found"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        default:
+          description: "Unspecified error in request"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+  /auth:
+    post:
+      summary: "Authenticate to the service and returns a token to be used as a profile\
+        \ to execute the CLI without the need for re-authentication"
+      description: "Authenticate to the service and returns a token to be used as\
+        \ a profile to execute the CLI without the need for re-authentication\nOptions:\n\
+        \  access-id -    Access ID\n  access-type -    Access Type (api_key/okta_saml/ldap)\n\
+        \  access-key -    Access key (relevant only for access-type=api_key)\n  ldap_proxy_url\
+        \ -    Address URL for LDAP proxy (relevant only for access-type=ldap)"
+      operationId: "auth"
+      parameters:
+      - name: "access-id"
+        in: "query"
+        description: "Access ID"
+        required: true
+        type: "string"
+        x-exportParamName: "AccessId"
+      - name: "access-type"
+        in: "query"
+        description: "Access Type (api_key/okta_saml/ldap)"
+        required: false
+        type: "string"
+        x-exportParamName: "AccessType"
+        x-optionalDataType: "String"
+      - name: "access-key"
+        in: "query"
+        description: "Access key (relevant only for access-type=api_key)"
+        required: false
+        type: "string"
+        x-exportParamName: "AccessKey"
+        x-optionalDataType: "String"
+      - name: "ldap_proxy_url"
+        in: "query"
+        description: "Address URL for LDAP proxy (relevant only for access-type=ldap)"
+        required: false
+        type: "string"
+        x-exportParamName: "LdapProxyUrl"
+        x-optionalDataType: "String"
+      responses:
+        200:
+          description: "response"
+          schema:
+            $ref: "#/definitions/ReplyObj"
+        400:
+          description: "Invalid request"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        401:
+          description: "Unauthorized access"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        403:
+          description: "Forbidden access"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        404:
+          description: "Item not found"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        default:
+          description: "Unspecified error in request"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+  /configure:
+    post:
+      summary: "Configure client profile."
+      description: "Configure client profile.\nOptions:\n  access-id -    Access ID\n\
+        \  access-key -    Access Key\n  access-type -    Access Type (api_key/azure_ad/okta_saml/ldap)\n\
+        \  ldap_proxy_url -    Address URL for ldap proxy (relevant only for access-type=ldap)\n\
+        \  azure_ad_object_id -    Azure Active Directory ObjectId (relevant only\
+        \ for access-type=azure_ad)"
+      operationId: "configure"
+      parameters:
+      - name: "access-id"
+        in: "query"
+        description: "Access ID"
+        required: true
+        type: "string"
+        x-exportParamName: "AccessId"
+      - name: "access-key"
+        in: "query"
+        description: "Access Key"
+        required: false
+        type: "string"
+        x-exportParamName: "AccessKey"
+        x-optionalDataType: "String"
+      - name: "access-type"
+        in: "query"
+        description: "Access Type (api_key/azure_ad/okta_saml/ldap)"
+        required: false
+        type: "string"
+        x-exportParamName: "AccessType"
+        x-optionalDataType: "String"
+      - name: "ldap_proxy_url"
+        in: "query"
+        description: "Address URL for ldap proxy (relevant only for access-type=ldap)"
+        required: false
+        type: "string"
+        x-exportParamName: "LdapProxyUrl"
+        x-optionalDataType: "String"
+      - name: "azure_ad_object_id"
+        in: "query"
+        description: "Azure Active Directory ObjectId (relevant only for access-type=azure_ad)"
+        required: false
+        type: "string"
+        x-exportParamName: "AzureAdObjectId"
+        x-optionalDataType: "String"
+      responses:
+        200:
+          description: "response"
+          schema:
+            $ref: "#/definitions/ReplyObj"
+        400:
+          description: "Invalid request"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        401:
+          description: "Unauthorized access"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        403:
+          description: "Forbidden access"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        404:
+          description: "Item not found"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        default:
+          description: "Unspecified error in request"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+  /create-auth-method:
+    post:
+      summary: "Create a new Auth Method in the account"
+      description: "Create a new Auth Method in the account\nOptions:\n  name -  \
+        \  Auth Method name\n  access-expires -    Access expiration date in Unix\
+        \ timestamp (select 0 for access without expiry date)\n  bound-ips -    A\
+        \ CIDR whitelist with the IPs that the access is restricted to\n  token -\
+        \    Access token"
+      operationId: "createAuthMethod"
+      parameters:
+      - name: "name"
+        in: "query"
+        description: "Auth Method name"
+        required: true
+        type: "string"
+        x-exportParamName: "Name"
+      - name: "access-expires"
+        in: "query"
+        description: "Access expiration date in Unix timestamp (select 0 for access\
+          \ without expiry date)"
+        required: false
+        type: "string"
+        x-exportParamName: "AccessExpires"
+        x-optionalDataType: "String"
+      - name: "bound-ips"
+        in: "query"
+        description: "A CIDR whitelist with the IPs that the access is restricted\
+          \ to"
+        required: false
+        type: "string"
+        x-exportParamName: "BoundIps"
+        x-optionalDataType: "String"
+      - name: "token"
+        in: "query"
+        description: "Access token"
+        required: true
+        type: "string"
+        x-exportParamName: "Token"
+      responses:
+        200:
+          description: "response"
+          schema:
+            $ref: "#/definitions/ReplyObj"
+        400:
+          description: "Invalid request"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        401:
+          description: "Unauthorized access"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        403:
+          description: "Forbidden access"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        404:
+          description: "Item not found"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        default:
+          description: "Unspecified error in request"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+  /create-auth-method-azure-ad:
+    post:
+      summary: "Create a new Auth Method that will be able to authentication using\
+        \ Azure Active Directory credentials"
+      description: "Create a new Auth Method that will be able to authentication using\
+        \ Azure Active Directory credentials\nOptions:\n  name -    Auth Method name\n\
+        \  access-expires -    Access expiration date in Unix timestamp (select 0\
+        \ for access without expiry date)\n  bound-ips -    A CIDR whitelist of the\
+        \ IPs that the access is restricted to\n  bound-tenant-id -    The Azure tenant\
+        \ id that the access is restricted to\n  issuer -    Issuer URL\n  jwks-uri\
+        \ -    The URL to the JSON Web Key Set (JWKS) that containing the public keys\
+        \ that should be used to verify any JSON Web Token (JWT) issued by the authorization\
+        \ server.\n  audience -    The audience in the JWT\n  bound-spid -    A list\
+        \ of service principal IDs that the access is restricted to\n  bound-group-id\
+        \ -    A list of group ids that the access is restricted to\n  bound-sub-id\
+        \ -    A list of subscription ids that the access is restricted to\n  bound-rg-id\
+        \ -    A list of resource groups that the access is restricted to\n  bound-providers\
+        \ -    A list of resource providers that the access is restricted to (e.g,\
+        \ Microsoft.Compute, Microsoft.ManagedIdentity, etc)\n  bound-resource-types\
+        \ -    A list of resource types that the access is restricted to (e.g, virtualMachines,\
+        \ userAssignedIdentities, etc)\n  bound-resource-names -    A list of resource\
+        \ names that the access is restricted to (e.g, a virtual machine name, scale\
+        \ set name, etc).\n  bound-resource-id -    A list of full resource ids that\
+        \ the access is restricted to\n  token -    Access token"
+      operationId: "createAuthMethodAzureAd"
+      parameters:
+      - name: "name"
+        in: "query"
+        description: "Auth Method name"
+        required: true
+        type: "string"
+        x-exportParamName: "Name"
+      - name: "access-expires"
+        in: "query"
+        description: "Access expiration date in Unix timestamp (select 0 for access\
+          \ without expiry date)"
+        required: false
+        type: "string"
+        x-exportParamName: "AccessExpires"
+        x-optionalDataType: "String"
+      - name: "bound-ips"
+        in: "query"
+        description: "A CIDR whitelist of the IPs that the access is restricted to"
+        required: false
+        type: "string"
+        x-exportParamName: "BoundIps"
+        x-optionalDataType: "String"
+      - name: "bound-tenant-id"
+        in: "query"
+        description: "The Azure tenant id that the access is restricted to"
+        required: true
+        type: "string"
+        x-exportParamName: "BoundTenantId"
+      - name: "issuer"
+        in: "query"
+        description: "Issuer URL"
+        required: false
+        type: "string"
+        x-exportParamName: "Issuer"
+        x-optionalDataType: "String"
+      - name: "jwks-uri"
+        in: "query"
+        description: "The URL to the JSON Web Key Set (JWKS) that containing the public\
+          \ keys that should be used to verify any JSON Web Token (JWT) issued by\
+          \ the authorization server."
+        required: false
+        type: "string"
+        x-exportParamName: "JwksUri"
+        x-optionalDataType: "String"
+      - name: "audience"
+        in: "query"
+        description: "The audience in the JWT"
+        required: false
+        type: "string"
+        x-exportParamName: "Audience"
+        x-optionalDataType: "String"
+      - name: "bound-spid"
+        in: "query"
+        description: "A list of service principal IDs that the access is restricted\
+          \ to"
+        required: false
+        type: "string"
+        x-exportParamName: "BoundSpid"
+        x-optionalDataType: "String"
+      - name: "bound-group-id"
+        in: "query"
+        description: "A list of group ids that the access is restricted to"
+        required: false
+        type: "string"
+        x-exportParamName: "BoundGroupId"
+        x-optionalDataType: "String"
+      - name: "bound-sub-id"
+        in: "query"
+        description: "A list of subscription ids that the access is restricted to"
+        required: false
+        type: "string"
+        x-exportParamName: "BoundSubId"
+        x-optionalDataType: "String"
+      - name: "bound-rg-id"
+        in: "query"
+        description: "A list of resource groups that the access is restricted to"
+        required: false
+        type: "string"
+        x-exportParamName: "BoundRgId"
+        x-optionalDataType: "String"
+      - name: "bound-providers"
+        in: "query"
+        description: "A list of resource providers that the access is restricted to\
+          \ (e.g, Microsoft.Compute, Microsoft.ManagedIdentity, etc)"
+        required: false
+        type: "string"
+        x-exportParamName: "BoundProviders"
+        x-optionalDataType: "String"
+      - name: "bound-resource-types"
+        in: "query"
+        description: "A list of resource types that the access is restricted to (e.g,\
+          \ virtualMachines, userAssignedIdentities, etc)"
+        required: false
+        type: "string"
+        x-exportParamName: "BoundResourceTypes"
+        x-optionalDataType: "String"
+      - name: "bound-resource-names"
+        in: "query"
+        description: "A list of resource names that the access is restricted to (e.g,\
+          \ a virtual machine name, scale set name, etc)."
+        required: false
+        type: "string"
+        x-exportParamName: "BoundResourceNames"
+        x-optionalDataType: "String"
+      - name: "bound-resource-id"
+        in: "query"
+        description: "A list of full resource ids that the access is restricted to"
+        required: false
+        type: "string"
+        x-exportParamName: "BoundResourceId"
+        x-optionalDataType: "String"
+      - name: "token"
+        in: "query"
+        description: "Access token"
+        required: true
+        type: "string"
+        x-exportParamName: "Token"
+      responses:
+        200:
+          description: "response"
+          schema:
+            $ref: "#/definitions/ReplyObj"
+        400:
+          description: "Invalid request"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        401:
+          description: "Unauthorized access"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        403:
+          description: "Forbidden access"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        404:
+          description: "Item not found"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        default:
+          description: "Unspecified error in request"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+  /create-auth-method-ldap:
+    post:
+      summary: "Create a new Auth Method that will be able to authentication using\
+        \ LDAP"
+      description: "Create a new Auth Method that will be able to authentication using\
+        \ LDAP\nOptions:\n  name -    Auth Method name\n  access-expires -    Access\
+        \ expiration date in Unix timestamp (select 0 for access without expiry date)\n\
+        \  bound-ips -    A CIDR whitelist of the IPs that the access is restricted\
+        \ to\n  public-key-file-path -    A public key generated for LDAP authentication\
+        \ method on Akeyless [RSA2048]\n  token -    Access token"
+      operationId: "createAuthMethodLdap"
+      parameters:
+      - name: "name"
+        in: "query"
+        description: "Auth Method name"
+        required: true
+        type: "string"
+        x-exportParamName: "Name"
+      - name: "access-expires"
+        in: "query"
+        description: "Access expiration date in Unix timestamp (select 0 for access\
+          \ without expiry date)"
+        required: false
+        type: "string"
+        x-exportParamName: "AccessExpires"
+        x-optionalDataType: "String"
+      - name: "bound-ips"
+        in: "query"
+        description: "A CIDR whitelist of the IPs that the access is restricted to"
+        required: false
+        type: "string"
+        x-exportParamName: "BoundIps"
+        x-optionalDataType: "String"
+      - name: "public-key-file-path"
+        in: "query"
+        description: "A public key generated for LDAP authentication method on Akeyless\
+          \ [RSA2048]"
+        required: true
+        type: "string"
+        x-exportParamName: "PublicKeyFilePath"
+      - name: "token"
+        in: "query"
+        description: "Access token"
+        required: true
+        type: "string"
+        x-exportParamName: "Token"
+      responses:
+        200:
+          description: "response"
+          schema:
+            $ref: "#/definitions/ReplyObj"
+        400:
+          description: "Invalid request"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        401:
+          description: "Unauthorized access"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        403:
+          description: "Forbidden access"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        404:
+          description: "Item not found"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        default:
+          description: "Unspecified error in request"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+  /create-auth-method-oauth2:
+    post:
+      summary: "Create a new Auth Method that will be able to authentication using\
+        \ OpenId/OAuth2"
+      description: "Create a new Auth Method that will be able to authentication using\
+        \ OpenId/OAuth2\nOptions:\n  name -    Auth Method name\n  access-expires\
+        \ -    Access expiration date in Unix timestamp (select 0 for access without\
+        \ expiry date)\n  bound-ips -    A CIDR whitelist of the IPs that the access\
+        \ is restricted to\n  bound-clients-ids -    The clients ids that the access\
+        \ is restricted to\n  issuer -    Issuer URL\n  jwks-uri -    The URL to the\
+        \ JSON Web Key Set (JWKS) that containing the public keys that should be used\
+        \ to verify any JSON Web Token (JWT) issued by the authorization server.\n\
+        \  audience -    The audience in the JWT\n  token -    Access token"
+      operationId: "createAuthMethodOauth2"
+      parameters:
+      - name: "name"
+        in: "query"
+        description: "Auth Method name"
+        required: true
+        type: "string"
+        x-exportParamName: "Name"
+      - name: "access-expires"
+        in: "query"
+        description: "Access expiration date in Unix timestamp (select 0 for access\
+          \ without expiry date)"
+        required: false
+        type: "string"
+        x-exportParamName: "AccessExpires"
+        x-optionalDataType: "String"
+      - name: "bound-ips"
+        in: "query"
+        description: "A CIDR whitelist of the IPs that the access is restricted to"
+        required: false
+        type: "string"
+        x-exportParamName: "BoundIps"
+        x-optionalDataType: "String"
+      - name: "bound-clients-ids"
+        in: "query"
+        description: "The clients ids that the access is restricted to"
+        required: true
+        type: "string"
+        x-exportParamName: "BoundClientsIds"
+      - name: "issuer"
+        in: "query"
+        description: "Issuer URL"
+        required: true
+        type: "string"
+        x-exportParamName: "Issuer"
+      - name: "jwks-uri"
+        in: "query"
+        description: "The URL to the JSON Web Key Set (JWKS) that containing the public\
+          \ keys that should be used to verify any JSON Web Token (JWT) issued by\
+          \ the authorization server."
+        required: true
+        type: "string"
+        x-exportParamName: "JwksUri"
+      - name: "audience"
+        in: "query"
+        description: "The audience in the JWT"
+        required: true
+        type: "string"
+        x-exportParamName: "Audience"
+      - name: "token"
+        in: "query"
+        description: "Access token"
+        required: true
+        type: "string"
+        x-exportParamName: "Token"
+      responses:
+        200:
+          description: "response"
+          schema:
+            $ref: "#/definitions/ReplyObj"
+        400:
+          description: "Invalid request"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        401:
+          description: "Unauthorized access"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        403:
+          description: "Forbidden access"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        404:
+          description: "Item not found"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        default:
+          description: "Unspecified error in request"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+  /create-auth-method-saml:
+    post:
+      summary: "Create a new Auth Method that will be able to authentication using\
+        \ SAML"
+      description: "Create a new Auth Method that will be able to authentication using\
+        \ SAML\nOptions:\n  name -    Auth Method name\n  access-expires -    Access\
+        \ expiration date in Unix timestamp (select 0 for access without expiry date)\n\
+        \  bound-ips -    A CIDR whitelist of the IPs that the access is restricted\
+        \ to\n  idp-metadata-url -    IDP metadata url\n  token -    Access token"
+      operationId: "createAuthMethodSaml"
+      parameters:
+      - name: "name"
+        in: "query"
+        description: "Auth Method name"
+        required: true
+        type: "string"
+        x-exportParamName: "Name"
+      - name: "access-expires"
+        in: "query"
+        description: "Access expiration date in Unix timestamp (select 0 for access\
+          \ without expiry date)"
+        required: false
+        type: "string"
+        x-exportParamName: "AccessExpires"
+        x-optionalDataType: "String"
+      - name: "bound-ips"
+        in: "query"
+        description: "A CIDR whitelist of the IPs that the access is restricted to"
+        required: false
+        type: "string"
+        x-exportParamName: "BoundIps"
+        x-optionalDataType: "String"
+      - name: "idp-metadata-url"
+        in: "query"
+        description: "IDP metadata url"
+        required: true
+        type: "string"
+        x-exportParamName: "IdpMetadataUrl"
+      - name: "token"
+        in: "query"
+        description: "Access token"
+        required: true
+        type: "string"
+        x-exportParamName: "Token"
+      responses:
+        200:
+          description: "response"
+          schema:
+            $ref: "#/definitions/ReplyObj"
+        400:
+          description: "Invalid request"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        401:
+          description: "Unauthorized access"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        403:
+          description: "Forbidden access"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        404:
+          description: "Item not found"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        default:
+          description: "Unspecified error in request"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+  /create-dynamic-secret:
+    post:
+      summary: "Creates a new dynamic secret item"
+      description: "Creates a new dynamic secret item\nOptions:\n  name -    Dynamic\
+        \ secret name\n  metadata -    Metadata about the dynamic secret\n  key -\
+        \    The name of a key that used to encrypt the dynamic secret values (if\
+        \ empty, the account default protectionKey key will be used)\n  token -  \
+        \  Access token"
+      operationId: "createDynamicSecret"
+      parameters:
+      - name: "name"
+        in: "query"
+        description: "Dynamic secret name"
+        required: true
+        type: "string"
+        x-exportParamName: "Name"
+      - name: "metadata"
+        in: "query"
+        description: "Metadata about the dynamic secret"
+        required: false
+        type: "string"
+        x-exportParamName: "Metadata"
+        x-optionalDataType: "String"
+      - name: "key"
+        in: "query"
+        description: "The name of a key that used to encrypt the dynamic secret values\
+          \ (if empty, the account default protectionKey key will be used)"
+        required: false
+        type: "string"
+        x-exportParamName: "Key"
+        x-optionalDataType: "String"
+      - name: "token"
+        in: "query"
+        description: "Access token"
+        required: true
+        type: "string"
+        x-exportParamName: "Token"
+      responses:
+        200:
+          description: "response"
+          schema:
+            $ref: "#/definitions/ReplyObj"
+        400:
+          description: "Invalid request"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        401:
+          description: "Unauthorized access"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        403:
+          description: "Forbidden access"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        404:
+          description: "Item not found"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        default:
+          description: "Unspecified error in request"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+  /create-key:
+    post:
+      summary: "Creates a new key"
+      description: "Creates a new key\nOptions:\n  name -    Key name\n  alg -   \
+        \ Key type. options- [AES128GCM, AES256GCM, AES128SIV, AES256SIV, RSA1024,\
+        \ RSA2048]\n  metadata -    Metadata about the key\n  split-level -    The\
+        \ number of fragments that the item will be split into (not includes customer\
+        \ fragment)\n  customer-frg-id -    The customer fragment ID that will be\
+        \ used to create the key (if empty, the key will be created independently\
+        \ of a customer fragment)\n  token -    Access token"
+      operationId: "createKey"
+      parameters:
+      - name: "name"
+        in: "query"
+        description: "Key name"
+        required: true
+        type: "string"
+        x-exportParamName: "Name"
+      - name: "alg"
+        in: "query"
+        description: "Key type. options- [AES128GCM, AES256GCM, AES128SIV, AES256SIV,\
+          \ RSA1024, RSA2048]"
+        required: true
+        type: "string"
+        x-exportParamName: "Alg"
+      - name: "metadata"
+        in: "query"
+        description: "Metadata about the key"
+        required: false
+        type: "string"
+        x-exportParamName: "Metadata"
+        x-optionalDataType: "String"
+      - name: "split-level"
+        in: "query"
+        description: "The number of fragments that the item will be split into (not\
+          \ includes customer fragment)"
+        required: false
+        type: "string"
+        x-exportParamName: "SplitLevel"
+        x-optionalDataType: "String"
+      - name: "customer-frg-id"
+        in: "query"
+        description: "The customer fragment ID that will be used to create the key\
+          \ (if empty, the key will be created independently of a customer fragment)"
+        required: false
+        type: "string"
+        x-exportParamName: "CustomerFrgId"
+        x-optionalDataType: "String"
+      - name: "token"
+        in: "query"
+        description: "Access token"
+        required: true
+        type: "string"
+        x-exportParamName: "Token"
+      responses:
+        200:
+          description: "response"
+          schema:
+            $ref: "#/definitions/ReplyObj"
+        400:
+          description: "Invalid request"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        401:
+          description: "Unauthorized access"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        403:
+          description: "Forbidden access"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        404:
+          description: "Item not found"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        default:
+          description: "Unspecified error in request"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+  /create-role:
+    post:
+      summary: "Creates a new role"
+      description: "Creates a new role\nOptions:\n  name -    Role name\n  comment\
+        \ -    Comment about the role\n  token -    Access token"
+      operationId: "createRole"
+      parameters:
+      - name: "name"
+        in: "query"
+        description: "Role name"
+        required: true
+        type: "string"
+        x-exportParamName: "Name"
+      - name: "comment"
+        in: "query"
+        description: "Comment about the role"
+        required: false
+        type: "string"
+        x-exportParamName: "Comment"
+        x-optionalDataType: "String"
+      - name: "token"
+        in: "query"
+        description: "Access token"
+        required: true
+        type: "string"
+        x-exportParamName: "Token"
+      responses:
+        200:
+          description: "response"
+          schema:
+            $ref: "#/definitions/ReplyObj"
+        400:
+          description: "Invalid request"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        401:
+          description: "Unauthorized access"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        403:
+          description: "Forbidden access"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        404:
+          description: "Item not found"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        default:
+          description: "Unspecified error in request"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+  /create-secret:
+    post:
+      summary: "Creates a new secret item"
+      description: "Creates a new secret item\nOptions:\n  name -    Secret name\n\
+        \  value -    The secret value\n  metadata -    Metadata about the secret\n\
+        \  key -    The name of a key that used to encrypt the secret value (if empty,\
+        \ the account default protectionKey key will be used)\n  multiline -    The\
+        \ provided value is a multiline value (separated by '\\n')\n  token -    Access\
+        \ token"
+      operationId: "createSecret"
+      parameters:
+      - name: "name"
+        in: "query"
+        description: "Secret name"
+        required: true
+        type: "string"
+        x-exportParamName: "Name"
+      - name: "value"
+        in: "query"
+        description: "The secret value"
+        required: true
+        type: "string"
+        x-exportParamName: "Value"
+      - name: "metadata"
+        in: "query"
+        description: "Metadata about the secret"
+        required: false
+        type: "string"
+        x-exportParamName: "Metadata"
+        x-optionalDataType: "String"
+      - name: "key"
+        in: "query"
+        description: "The name of a key that used to encrypt the secret value (if\
+          \ empty, the account default protectionKey key will be used)"
+        required: false
+        type: "string"
+        x-exportParamName: "Key"
+        x-optionalDataType: "String"
+      - name: "multiline"
+        in: "query"
+        description: "The provided value is a multiline value (separated by '\\n')"
+        required: false
+        type: "boolean"
+        x-exportParamName: "Multiline"
+        x-optionalDataType: "Bool"
+      - name: "token"
+        in: "query"
+        description: "Access token"
+        required: true
+        type: "string"
+        x-exportParamName: "Token"
+      responses:
+        200:
+          description: "response"
+          schema:
+            $ref: "#/definitions/ReplyObj"
+        400:
+          description: "Invalid request"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        401:
+          description: "Unauthorized access"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        403:
+          description: "Forbidden access"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        404:
+          description: "Item not found"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        default:
+          description: "Unspecified error in request"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+  /create-ssh-cert-issuer:
+    post:
+      summary: "Creates a new SSH certificate issuer"
+      description: "Creates a new SSH certificate issuer\nOptions:\n  name -    SSH\
+        \ certificate issuer name\n  signer-key-name -    A key to sign the certificate\
+        \ with\n  allowed-users -    Users allowed to fetch the certificate, ex. root,ubuntu\n\
+        \  principals -    Signed certificates with principal, ex. example_role1,example_role2\n\
+        \  extensions -    Signed certificates with extensions, ex. permit-port-forwarding=\"\
+        \"\n  expiration-sec -    Signed certificates with expiration, use second\
+        \ units\n  metadata -    A metadata about the issuer\n  token -    Access\
+        \ token"
+      operationId: "createSshCertIssuer"
+      parameters:
+      - name: "name"
+        in: "query"
+        description: "SSH certificate issuer name"
+        required: true
+        type: "string"
+        x-exportParamName: "Name"
+      - name: "signer-key-name"
+        in: "query"
+        description: "A key to sign the certificate with"
+        required: true
+        type: "string"
+        x-exportParamName: "SignerKeyName"
+      - name: "allowed-users"
+        in: "query"
+        description: "Users allowed to fetch the certificate, ex. root,ubuntu"
+        required: true
+        type: "string"
+        x-exportParamName: "AllowedUsers"
+      - name: "principals"
+        in: "query"
+        description: "Signed certificates with principal, ex. example_role1,example_role2"
+        required: false
+        type: "string"
+        x-exportParamName: "Principals"
+        x-optionalDataType: "String"
+      - name: "extensions"
+        in: "query"
+        description: "Signed certificates with extensions, ex. permit-port-forwarding=\"\
+          \""
+        required: false
+        type: "string"
+        x-exportParamName: "Extensions"
+        x-optionalDataType: "String"
+      - name: "expiration-sec"
+        in: "query"
+        description: "Signed certificates with expiration, use second units"
+        required: true
+        type: "string"
+        x-exportParamName: "ExpirationSec"
+      - name: "metadata"
+        in: "query"
+        description: "A metadata about the issuer"
+        required: false
+        type: "string"
+        x-exportParamName: "Metadata"
+        x-optionalDataType: "String"
+      - name: "token"
+        in: "query"
+        description: "Access token"
+        required: true
+        type: "string"
+        x-exportParamName: "Token"
+      responses:
+        200:
+          description: "response"
+          schema:
+            $ref: "#/definitions/ReplyObj"
+        400:
+          description: "Invalid request"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        401:
+          description: "Unauthorized access"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        403:
+          description: "Forbidden access"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        404:
+          description: "Item not found"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        default:
+          description: "Unspecified error in request"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+  /decrypt:
+    post:
+      summary: "Decrypts ciphertext into plaintext by using an AES key"
+      description: "Decrypts ciphertext into plaintext by using an AES key\nOptions:\n\
+        \  key-name -    The name of the key to use in the decryption process\n  ciphertext\
+        \ -    Ciphertext to be decrypted in base64 encoded format\n  encryption-context\
+        \ -    The encryption context. If this was specified in the encrypt command,\
+        \ it must be specified here or the decryption operation will fail\n  token\
+        \ -    Access token"
+      operationId: "decrypt"
+      parameters:
+      - name: "key-name"
+        in: "query"
+        description: "The name of the key to use in the decryption process"
+        required: true
+        type: "string"
+        x-exportParamName: "KeyName"
+      - name: "ciphertext"
+        in: "query"
+        description: "Ciphertext to be decrypted in base64 encoded format"
+        required: true
+        type: "string"
+        x-exportParamName: "Ciphertext"
+      - name: "encryption-context"
+        in: "query"
+        description: "The encryption context. If this was specified in the encrypt\
+          \ command, it must be specified here or the decryption operation will fail"
+        required: false
+        type: "string"
+        x-exportParamName: "EncryptionContext"
+        x-optionalDataType: "String"
+      - name: "token"
+        in: "query"
+        description: "Access token"
+        required: true
+        type: "string"
+        x-exportParamName: "Token"
+      responses:
+        200:
+          description: "response"
+          schema:
+            $ref: "#/definitions/ReplyObj"
+        400:
+          description: "Invalid request"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        401:
+          description: "Unauthorized access"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        403:
+          description: "Forbidden access"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        404:
+          description: "Item not found"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        default:
+          description: "Unspecified error in request"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+  /decrypt-file:
+    post:
+      summary: "Decrypts a file by using an AES key"
+      description: "Decrypts a file by using an AES key\nOptions:\n  key-name -  \
+        \  The name of the key to use in the decryption process\n  in -    Path to\
+        \ the file to be decrypted. If not provided, the content will be taken from\
+        \ stdin\n  out -    Path to the output file. If not provided, the output will\
+        \ be sent to stdout\n  encryption-context -    The encryption context. If\
+        \ this was specified in the encrypt command, it must be specified here or\
+        \ the decryption operation will fail\n  token -    Access token"
+      operationId: "decryptFile"
+      parameters:
+      - name: "key-name"
+        in: "query"
+        description: "The name of the key to use in the decryption process"
+        required: true
+        type: "string"
+        x-exportParamName: "KeyName"
+      - name: "in"
+        in: "query"
+        description: "Path to the file to be decrypted. If not provided, the content\
+          \ will be taken from stdin"
+        required: true
+        type: "string"
+        x-exportParamName: "In"
+      - name: "out"
+        in: "query"
+        description: "Path to the output file. If not provided, the output will be\
+          \ sent to stdout"
+        required: false
+        type: "string"
+        x-exportParamName: "Out"
+        x-optionalDataType: "String"
+      - name: "encryption-context"
+        in: "query"
+        description: "The encryption context. If this was specified in the encrypt\
+          \ command, it must be specified here or the decryption operation will fail"
+        required: false
+        type: "string"
+        x-exportParamName: "EncryptionContext"
+        x-optionalDataType: "String"
+      - name: "token"
+        in: "query"
+        description: "Access token"
+        required: true
+        type: "string"
+        x-exportParamName: "Token"
+      responses:
+        200:
+          description: "response"
+          schema:
+            $ref: "#/definitions/ReplyObj"
+        400:
+          description: "Invalid request"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        401:
+          description: "Unauthorized access"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        403:
+          description: "Forbidden access"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        404:
+          description: "Item not found"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        default:
+          description: "Unspecified error in request"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+  /decrypt-pkcs1:
+    post:
+      summary: "Decrypts a plaintext using RSA and the padding scheme from PKCS#1\
+        \ v1.5"
+      description: "Decrypts a plaintext using RSA and the padding scheme from PKCS#1\
+        \ v1.5\nOptions:\n  key-name -    The name of the RSA key to use in the decryption\
+        \ process\n  ciphertext -    Ciphertext to be decrypted in base64 encoded\
+        \ format\n  token -    Access token"
+      operationId: "decryptPkcs1"
+      parameters:
+      - name: "key-name"
+        in: "query"
+        description: "The name of the RSA key to use in the decryption process"
+        required: true
+        type: "string"
+        x-exportParamName: "KeyName"
+      - name: "ciphertext"
+        in: "query"
+        description: "Ciphertext to be decrypted in base64 encoded format"
+        required: true
+        type: "string"
+        x-exportParamName: "Ciphertext"
+      - name: "token"
+        in: "query"
+        description: "Access token"
+        required: true
+        type: "string"
+        x-exportParamName: "Token"
+      responses:
+        200:
+          description: "response"
+          schema:
+            $ref: "#/definitions/ReplyObj"
+        400:
+          description: "Invalid request"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        401:
+          description: "Unauthorized access"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        403:
+          description: "Forbidden access"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        404:
+          description: "Item not found"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        default:
+          description: "Unspecified error in request"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+  /delete-assoc:
+    post:
+      summary: "Delete an association between role and auth method"
+      description: "Delete an association between role and auth method\nOptions:\n\
+        \  assoc-id -    The association id to be deleted\n  token -    Access token"
+      operationId: "deleteAssoc"
+      parameters:
+      - name: "assoc-id"
+        in: "query"
+        description: "The association id to be deleted"
+        required: true
+        type: "string"
+        x-exportParamName: "AssocId"
+      - name: "token"
+        in: "query"
+        description: "Access token"
+        required: true
+        type: "string"
+        x-exportParamName: "Token"
+      responses:
+        200:
+          description: "response"
+          schema:
+            $ref: "#/definitions/ReplyObj"
+        400:
+          description: "Invalid request"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        401:
+          description: "Unauthorized access"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        403:
+          description: "Forbidden access"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        404:
+          description: "Item not found"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        default:
+          description: "Unspecified error in request"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+  /delete-auth-method:
+    post:
+      summary: "Delete the Auth Method"
+      description: "Delete the Auth Method\nOptions:\n  name -    Auth Method name\n\
+        \  token -    Access token"
+      operationId: "deleteAuthMethod"
+      parameters:
+      - name: "name"
+        in: "query"
+        description: "Auth Method name"
+        required: true
+        type: "string"
+        x-exportParamName: "Name"
+      - name: "token"
+        in: "query"
+        description: "Access token"
+        required: true
+        type: "string"
+        x-exportParamName: "Token"
+      responses:
+        200:
+          description: "response"
+          schema:
+            $ref: "#/definitions/ReplyObj"
+        400:
+          description: "Invalid request"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        401:
+          description: "Unauthorized access"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        403:
+          description: "Forbidden access"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        404:
+          description: "Item not found"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        default:
+          description: "Unspecified error in request"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+  /delete-item:
+    post:
+      summary: "Delete an item"
+      description: "Delete an item\nOptions:\n  name -    Item name\n  token -   \
+        \ Access token"
+      operationId: "deleteItem"
+      parameters:
+      - name: "name"
+        in: "query"
+        description: "Item name"
+        required: true
+        type: "string"
+        x-exportParamName: "Name"
+      - name: "token"
+        in: "query"
+        description: "Access token"
+        required: true
+        type: "string"
+        x-exportParamName: "Token"
+      responses:
+        200:
+          description: "response"
+          schema:
+            $ref: "#/definitions/ReplyObj"
+        400:
+          description: "Invalid request"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        401:
+          description: "Unauthorized access"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        403:
+          description: "Forbidden access"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        404:
+          description: "Item not found"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        default:
+          description: "Unspecified error in request"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+  /delete-role:
+    post:
+      summary: "Delete a role"
+      description: "Delete a role\nOptions:\n  name -    Role name\n  token -    Access\
+        \ token"
+      operationId: "deleteRole"
+      parameters:
+      - name: "name"
+        in: "query"
+        description: "Role name"
+        required: true
+        type: "string"
+        x-exportParamName: "Name"
+      - name: "token"
+        in: "query"
+        description: "Access token"
+        required: true
+        type: "string"
+        x-exportParamName: "Token"
+      responses:
+        200:
+          description: "response"
+          schema:
+            $ref: "#/definitions/ReplyObj"
+        400:
+          description: "Invalid request"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        401:
+          description: "Unauthorized access"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        403:
+          description: "Forbidden access"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        404:
+          description: "Item not found"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        default:
+          description: "Unspecified error in request"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+  /delete-role-rule:
+    post:
+      summary: "Delete a rule from a role"
+      description: "Delete a rule from a role\nOptions:\n  role-name -    The role\
+        \ name to be updated\n  path -    The path the rule refers to\n  token - \
+        \   Access token"
+      operationId: "deleteRoleRule"
+      parameters:
+      - name: "role-name"
+        in: "query"
+        description: "The role name to be updated"
+        required: true
+        type: "string"
+        x-exportParamName: "RoleName"
+      - name: "path"
+        in: "query"
+        description: "The path the rule refers to"
+        required: true
+        type: "string"
+        x-exportParamName: "Path"
+      - name: "token"
+        in: "query"
+        description: "Access token"
+        required: true
+        type: "string"
+        x-exportParamName: "Token"
+      responses:
+        200:
+          description: "response"
+          schema:
+            $ref: "#/definitions/ReplyObj"
+        400:
+          description: "Invalid request"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        401:
+          description: "Unauthorized access"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        403:
+          description: "Forbidden access"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        404:
+          description: "Item not found"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        default:
+          description: "Unspecified error in request"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+  /describe-item:
+    post:
+      summary: "Returns the item details"
+      description: "Returns the item details\nOptions:\n  name -    Item name\n  token\
+        \ -    Access token"
+      operationId: "describeItem"
+      parameters:
+      - name: "name"
+        in: "query"
+        description: "Item name"
+        required: true
+        type: "string"
+        x-exportParamName: "Name"
+      - name: "token"
+        in: "query"
+        description: "Access token"
+        required: true
+        type: "string"
+        x-exportParamName: "Token"
+      responses:
+        200:
+          description: "response"
+          schema:
+            $ref: "#/definitions/ReplyObj"
+        400:
+          description: "Invalid request"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        401:
+          description: "Unauthorized access"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        403:
+          description: "Forbidden access"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        404:
+          description: "Item not found"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        default:
+          description: "Unspecified error in request"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+  /encrypt:
+    post:
+      summary: "Encrypts plaintext into ciphertext by using an AES key"
+      description: "Encrypts plaintext into ciphertext by using an AES key\nOptions:\n\
+        \  key-name -    The name of the key to use in the encryption process\n  plaintext\
+        \ -    Data to be encrypted\n  encryption-context -    name-value pair that\
+        \ specifies the encryption context to be used for authenticated encryption.\
+        \ If used here, the same value must be supplied to the decrypt command or\
+        \ decryption will fail\n  token -    Access token"
+      operationId: "encrypt"
+      parameters:
+      - name: "key-name"
+        in: "query"
+        description: "The name of the key to use in the encryption process"
+        required: true
+        type: "string"
+        x-exportParamName: "KeyName"
+      - name: "plaintext"
+        in: "query"
+        description: "Data to be encrypted"
+        required: true
+        type: "string"
+        x-exportParamName: "Plaintext"
+      - name: "encryption-context"
+        in: "query"
+        description: "name-value pair that specifies the encryption context to be\
+          \ used for authenticated encryption. If used here, the same value must be\
+          \ supplied to the decrypt command or decryption will fail"
+        required: false
+        type: "string"
+        x-exportParamName: "EncryptionContext"
+        x-optionalDataType: "String"
+      - name: "token"
+        in: "query"
+        description: "Access token"
+        required: true
+        type: "string"
+        x-exportParamName: "Token"
+      responses:
+        200:
+          description: "response"
+          schema:
+            $ref: "#/definitions/ReplyObj"
+        400:
+          description: "Invalid request"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        401:
+          description: "Unauthorized access"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        403:
+          description: "Forbidden access"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        404:
+          description: "Item not found"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        default:
+          description: "Unspecified error in request"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+  /encrypt-file:
+    post:
+      summary: "Encrypts a file by using an AES key"
+      description: "Encrypts a file by using an AES key\nOptions:\n  key-name -  \
+        \  The name of the key to use in the encryption process\n  in -    Path to\
+        \ the file to be encrypted. If not provided, the content will be taken from\
+        \ stdin\n  out -    Path to the output file. If not provided, the output will\
+        \ be sent to stdout\n  encryption-context -    name-value pair that specifies\
+        \ the encryption context to be used for authenticated encryption. If used\
+        \ here, the same value must be supplied to the decrypt command or decryption\
+        \ will fail\n  token -    Access token"
+      operationId: "encryptFile"
+      parameters:
+      - name: "key-name"
+        in: "query"
+        description: "The name of the key to use in the encryption process"
+        required: true
+        type: "string"
+        x-exportParamName: "KeyName"
+      - name: "in"
+        in: "query"
+        description: "Path to the file to be encrypted. If not provided, the content\
+          \ will be taken from stdin"
+        required: true
+        type: "string"
+        x-exportParamName: "In"
+      - name: "out"
+        in: "query"
+        description: "Path to the output file. If not provided, the output will be\
+          \ sent to stdout"
+        required: false
+        type: "string"
+        x-exportParamName: "Out"
+        x-optionalDataType: "String"
+      - name: "encryption-context"
+        in: "query"
+        description: "name-value pair that specifies the encryption context to be\
+          \ used for authenticated encryption. If used here, the same value must be\
+          \ supplied to the decrypt command or decryption will fail"
+        required: false
+        type: "string"
+        x-exportParamName: "EncryptionContext"
+        x-optionalDataType: "String"
+      - name: "token"
+        in: "query"
+        description: "Access token"
+        required: true
+        type: "string"
+        x-exportParamName: "Token"
+      responses:
+        200:
+          description: "response"
+          schema:
+            $ref: "#/definitions/ReplyObj"
+        400:
+          description: "Invalid request"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        401:
+          description: "Unauthorized access"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        403:
+          description: "Forbidden access"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        404:
+          description: "Item not found"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        default:
+          description: "Unspecified error in request"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+  /encrypt-pkcs1:
+    post:
+      summary: "Encrypts the given message with RSA and the padding scheme from PKCS#1\
+        \ v1.5"
+      description: "Encrypts the given message with RSA and the padding scheme from\
+        \ PKCS#1 v1.5\nOptions:\n  key-name -    The name of the RSA key to use in\
+        \ the encryption process\n  plaintext -    Data to be encrypted\n  token -\
+        \    Access token"
+      operationId: "encryptPkcs1"
+      parameters:
+      - name: "key-name"
+        in: "query"
+        description: "The name of the RSA key to use in the encryption process"
+        required: true
+        type: "string"
+        x-exportParamName: "KeyName"
+      - name: "plaintext"
+        in: "query"
+        description: "Data to be encrypted"
+        required: true
+        type: "string"
+        x-exportParamName: "Plaintext"
+      - name: "token"
+        in: "query"
+        description: "Access token"
+        required: true
+        type: "string"
+        x-exportParamName: "Token"
+      responses:
+        200:
+          description: "response"
+          schema:
+            $ref: "#/definitions/ReplyObj"
+        400:
+          description: "Invalid request"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        401:
+          description: "Unauthorized access"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        403:
+          description: "Forbidden access"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        404:
+          description: "Item not found"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        default:
+          description: "Unspecified error in request"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+  /get-auth-method:
+    post:
+      summary: "Returns an information about the Auth Method"
+      description: "Returns an information about the Auth Method\nOptions:\n  name\
+        \ -    Auth Method name\n  token -    Access token"
+      operationId: "getAuthMethod"
+      parameters:
+      - name: "name"
+        in: "query"
+        description: "Auth Method name"
+        required: true
+        type: "string"
+        x-exportParamName: "Name"
+      - name: "token"
+        in: "query"
+        description: "Access token"
+        required: true
+        type: "string"
+        x-exportParamName: "Token"
+      responses:
+        200:
+          description: "response"
+          schema:
+            $ref: "#/definitions/ReplyObj"
+        400:
+          description: "Invalid request"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        401:
+          description: "Unauthorized access"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        403:
+          description: "Forbidden access"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        404:
+          description: "Item not found"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        default:
+          description: "Unspecified error in request"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+  /get-dynamic-secret-value:
+    post:
+      summary: "Get dynamic secret value"
+      description: "Get dynamic secret value\nOptions:\n  name -    Dynamic secret\
+        \ name\n  token -    Access token"
+      operationId: "getDynamicSecretValue"
+      parameters:
+      - name: "name"
+        in: "query"
+        description: "Dynamic secret name"
+        required: true
+        type: "string"
+        x-exportParamName: "Name"
+      - name: "token"
+        in: "query"
+        description: "Access token"
+        required: true
+        type: "string"
+        x-exportParamName: "Token"
+      responses:
+        200:
+          description: "response"
+          schema:
+            $ref: "#/definitions/ReplyObj"
+        400:
+          description: "Invalid request"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        401:
+          description: "Unauthorized access"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        403:
+          description: "Forbidden access"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        404:
+          description: "Item not found"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        default:
+          description: "Unspecified error in request"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+  /get-role:
+    post:
+      summary: "Get role details"
+      description: "Get role details\nOptions:\n  name -    Role name\n  token - \
+        \   Access token"
+      operationId: "getRole"
+      parameters:
+      - name: "name"
+        in: "query"
+        description: "Role name"
+        required: true
+        type: "string"
+        x-exportParamName: "Name"
+      - name: "token"
+        in: "query"
+        description: "Access token"
+        required: true
+        type: "string"
+        x-exportParamName: "Token"
+      responses:
+        200:
+          description: "response"
+          schema:
+            $ref: "#/definitions/ReplyObj"
+        400:
+          description: "Invalid request"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        401:
+          description: "Unauthorized access"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        403:
+          description: "Forbidden access"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        404:
+          description: "Item not found"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        default:
+          description: "Unspecified error in request"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+  /get-rsa-public:
+    post:
+      summary: "Obtain the public key from a specific RSA private key"
+      description: "Obtain the public key from a specific RSA private key\nOptions:\n\
+        \  name -    Name of key to be created\n  token -    Access token"
+      operationId: "getRsaPublic"
+      parameters:
+      - name: "name"
+        in: "query"
+        description: "Name of key to be created"
+        required: true
+        type: "string"
+        x-exportParamName: "Name"
+      - name: "token"
+        in: "query"
+        description: "Access token"
+        required: true
+        type: "string"
+        x-exportParamName: "Token"
+      responses:
+        200:
+          description: "response"
+          schema:
+            $ref: "#/definitions/ReplyObj"
+        400:
+          description: "Invalid request"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        401:
+          description: "Unauthorized access"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        403:
+          description: "Forbidden access"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        404:
+          description: "Item not found"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        default:
+          description: "Unspecified error in request"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+  /get-secret-value:
+    post:
+      summary: "Get static secret value"
+      description: "Get static secret value\nOptions:\n  name -    Secret name\n \
+        \ token -    Access token"
+      operationId: "getSecretValue"
+      parameters:
+      - name: "name"
+        in: "query"
+        description: "Secret name"
+        required: true
+        type: "string"
+        x-exportParamName: "Name"
+      - name: "token"
+        in: "query"
+        description: "Access token"
+        required: true
+        type: "string"
+        x-exportParamName: "Token"
+      responses:
+        200:
+          description: "response"
+          schema:
+            $ref: "#/definitions/ReplyObj"
+        400:
+          description: "Invalid request"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        401:
+          description: "Unauthorized access"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        403:
+          description: "Forbidden access"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        404:
+          description: "Item not found"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        default:
+          description: "Unspecified error in request"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+  /get-ssh-certificate:
+    post:
+      summary: "Generates SSH certificate"
+      description: "Generates SSH certificate\nOptions:\n  cert-username -    The\
+        \ username to sign in the SSH certificate\n  cert-issuer-name -    The name\
+        \ of the SSH certificate issuer\n  public-key-file-path -    SSH public key\n\
+        \  token -    Access token"
+      operationId: "getSshCertificate"
+      parameters:
+      - name: "cert-username"
+        in: "query"
+        description: "The username to sign in the SSH certificate"
+        required: true
+        type: "string"
+        x-exportParamName: "CertUsername"
+      - name: "cert-issuer-name"
+        in: "query"
+        description: "The name of the SSH certificate issuer"
+        required: true
+        type: "string"
+        x-exportParamName: "CertIssuerName"
+      - name: "public-key-file-path"
+        in: "query"
+        description: "SSH public key"
+        required: true
+        type: "string"
+        x-exportParamName: "PublicKeyFilePath"
+      - name: "token"
+        in: "query"
+        description: "Access token"
+        required: true
+        type: "string"
+        x-exportParamName: "Token"
+      responses:
+        200:
+          description: "response"
+          schema:
+            $ref: "#/definitions/ReplyObj"
+        400:
+          description: "Invalid request"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        401:
+          description: "Unauthorized access"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        403:
+          description: "Forbidden access"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        404:
+          description: "Item not found"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        default:
+          description: "Unspecified error in request"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+  /help:
+    post:
+      summary: "help text"
+      description: "help text"
+      operationId: "help"
+      parameters: []
+      responses:
+        200:
+          description: "response"
+          schema:
+            $ref: "#/definitions/ReplyObj"
+        400:
+          description: "Invalid request"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        401:
+          description: "Unauthorized access"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        403:
+          description: "Forbidden access"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        404:
+          description: "Item not found"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        default:
+          description: "Unspecified error in request"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+  /list-auth-methods:
+    post:
+      summary: "Returns a list of all the Auth Methods in the account"
+      description: "Returns a list of all the Auth Methods in the account\nOptions:\n\
+        \  token -    Access token"
+      operationId: "listAuthMethods"
+      parameters:
+      - name: "token"
+        in: "query"
+        description: "Access token"
+        required: true
+        type: "string"
+        x-exportParamName: "Token"
+      responses:
+        200:
+          description: "response"
+          schema:
+            $ref: "#/definitions/ReplyObj"
+        400:
+          description: "Invalid request"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        401:
+          description: "Unauthorized access"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        403:
+          description: "Forbidden access"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        404:
+          description: "Item not found"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        default:
+          description: "Unspecified error in request"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+  /list-items:
+    post:
+      summary: "Returns a list of all accessible items"
+      description: "Returns a list of all accessible items\nOptions:\n  type -   \
+        \ The item types list of the requested items. In case it is empty, all types\
+        \ of items will be returned. options- [key, static-secret, dynamic-secret]\n\
+        \  ItemsTypes -    ItemsTypes\n  path -    Path to folder\n  token -    Access\
+        \ token"
+      operationId: "listItems"
+      parameters:
+      - name: "type"
+        in: "query"
+        description: "The item types list of the requested items. In case it is empty,\
+          \ all types of items will be returned. options- [key, static-secret, dynamic-secret]"
+        required: false
+        type: "string"
+        x-exportParamName: "Type_"
+        x-optionalDataType: "String"
+      - name: "ItemsTypes"
+        in: "query"
+        description: "ItemsTypes"
+        required: false
+        type: "string"
+        x-exportParamName: "ItemsTypes"
+        x-optionalDataType: "String"
+      - name: "path"
+        in: "query"
+        description: "Path to folder"
+        required: false
+        type: "string"
+        x-exportParamName: "Path"
+        x-optionalDataType: "String"
+      - name: "token"
+        in: "query"
+        description: "Access token"
+        required: true
+        type: "string"
+        x-exportParamName: "Token"
+      responses:
+        200:
+          description: "response"
+          schema:
+            $ref: "#/definitions/ReplyObj"
+        400:
+          description: "Invalid request"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        401:
+          description: "Unauthorized access"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        403:
+          description: "Forbidden access"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        404:
+          description: "Item not found"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        default:
+          description: "Unspecified error in request"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+  /list-roles:
+    post:
+      summary: "Returns a list of all roles in the account"
+      description: "Returns a list of all roles in the account\nOptions:\n  token\
+        \ -    Access token"
+      operationId: "listRoles"
+      parameters:
+      - name: "token"
+        in: "query"
+        description: "Access token"
+        required: true
+        type: "string"
+        x-exportParamName: "Token"
+      responses:
+        200:
+          description: "response"
+          schema:
+            $ref: "#/definitions/ReplyObj"
+        400:
+          description: "Invalid request"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        401:
+          description: "Unauthorized access"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        403:
+          description: "Forbidden access"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        404:
+          description: "Item not found"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        default:
+          description: "Unspecified error in request"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+  /set-role-rule:
+    post:
+      summary: "Set a rule to a role"
+      description: "Set a rule to a role\nOptions:\n  role-name -    The role name\
+        \ to be updated\n  path -    The path the rule refers to\n  capability - \
+        \   List of the approved/denied capabilities in the path options- [read, create,\
+        \ update, delete, list, deny]\n  token -    Access token"
+      operationId: "setRoleRule"
+      parameters:
+      - name: "role-name"
+        in: "query"
+        description: "The role name to be updated"
+        required: true
+        type: "string"
+        x-exportParamName: "RoleName"
+      - name: "path"
+        in: "query"
+        description: "The path the rule refers to"
+        required: true
+        type: "string"
+        x-exportParamName: "Path"
+      - name: "capability"
+        in: "query"
+        description: "List of the approved/denied capabilities in the path options-\
+          \ [read, create, update, delete, list, deny]"
+        required: true
+        type: "string"
+        x-exportParamName: "Capability"
+      - name: "token"
+        in: "query"
+        description: "Access token"
+        required: true
+        type: "string"
+        x-exportParamName: "Token"
+      responses:
+        200:
+          description: "response"
+          schema:
+            $ref: "#/definitions/ReplyObj"
+        400:
+          description: "Invalid request"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        401:
+          description: "Unauthorized access"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        403:
+          description: "Forbidden access"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        404:
+          description: "Item not found"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        default:
+          description: "Unspecified error in request"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+  /sign-pkcs1:
+    post:
+      summary: "Calculates the signature of hashed using RSASSA-PKCS1-V1_5-SIGN from\
+        \ RSA PKCS#1 v1.5"
+      description: "Calculates the signature of hashed using RSASSA-PKCS1-V1_5-SIGN\
+        \ from RSA PKCS#1 v1.5\nOptions:\n  key-name -    The name of the RSA key\
+        \ to use in the signing process\n  message -    The message to be signed\n\
+        \  token -    Access token"
+      operationId: "signPkcs1"
+      parameters:
+      - name: "key-name"
+        in: "query"
+        description: "The name of the RSA key to use in the signing process"
+        required: true
+        type: "string"
+        x-exportParamName: "KeyName"
+      - name: "message"
+        in: "query"
+        description: "The message to be signed"
+        required: true
+        type: "string"
+        x-exportParamName: "Message"
+      - name: "token"
+        in: "query"
+        description: "Access token"
+        required: true
+        type: "string"
+        x-exportParamName: "Token"
+      responses:
+        200:
+          description: "response"
+          schema:
+            $ref: "#/definitions/ReplyObj"
+        400:
+          description: "Invalid request"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        401:
+          description: "Unauthorized access"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        403:
+          description: "Forbidden access"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        404:
+          description: "Item not found"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        default:
+          description: "Unspecified error in request"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+  /unconfigure:
+    post:
+      summary: "Remove Configuration of client profile."
+      description: "Remove Configuration of client profile.\nOptions:\n  token - \
+        \   Access token"
+      operationId: "unconfigure"
+      parameters:
+      - name: "token"
+        in: "query"
+        description: "Access token"
+        required: true
+        type: "string"
+        x-exportParamName: "Token"
+      responses:
+        200:
+          description: "response"
+          schema:
+            $ref: "#/definitions/ReplyObj"
+        400:
+          description: "Invalid request"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        401:
+          description: "Unauthorized access"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        403:
+          description: "Forbidden access"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        404:
+          description: "Item not found"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        default:
+          description: "Unspecified error in request"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+  /update-item:
+    post:
+      summary: "Update item name and metadata"
+      description: "Update item name and metadata\nOptions:\n  name -    Current item\
+        \ name\n  new-name -    New item name\n  new-metadata -    New item metadata\n\
+        \  token -    Access token"
+      operationId: "updateItem"
+      parameters:
+      - name: "name"
+        in: "query"
+        description: "Current item name"
+        required: true
+        type: "string"
+        x-exportParamName: "Name"
+      - name: "new-name"
+        in: "query"
+        description: "New item name"
+        required: false
+        type: "string"
+        x-exportParamName: "NewName"
+        x-optionalDataType: "String"
+      - name: "new-metadata"
+        in: "query"
+        description: "New item metadata"
+        required: false
+        type: "string"
+        x-exportParamName: "NewMetadata"
+        x-optionalDataType: "String"
+      - name: "token"
+        in: "query"
+        description: "Access token"
+        required: true
+        type: "string"
+        x-exportParamName: "Token"
+      responses:
+        200:
+          description: "response"
+          schema:
+            $ref: "#/definitions/ReplyObj"
+        400:
+          description: "Invalid request"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        401:
+          description: "Unauthorized access"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        403:
+          description: "Forbidden access"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        404:
+          description: "Item not found"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        default:
+          description: "Unspecified error in request"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+  /update-role:
+    post:
+      summary: "Update role details"
+      description: "Update role details\nOptions:\n  name -    Role name\n  new-name\
+        \ -    New Role name\n  new-comment -    New comment about the role\n  token\
+        \ -    Access token"
+      operationId: "updateRole"
+      parameters:
+      - name: "name"
+        in: "query"
+        description: "Role name"
+        required: true
+        type: "string"
+        x-exportParamName: "Name"
+      - name: "new-name"
+        in: "query"
+        description: "New Role name"
+        required: false
+        type: "string"
+        x-exportParamName: "NewName"
+        x-optionalDataType: "String"
+      - name: "new-comment"
+        in: "query"
+        description: "New comment about the role"
+        required: false
+        type: "string"
+        x-exportParamName: "NewComment"
+        x-optionalDataType: "String"
+      - name: "token"
+        in: "query"
+        description: "Access token"
+        required: true
+        type: "string"
+        x-exportParamName: "Token"
+      responses:
+        200:
+          description: "response"
+          schema:
+            $ref: "#/definitions/ReplyObj"
+        400:
+          description: "Invalid request"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        401:
+          description: "Unauthorized access"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        403:
+          description: "Forbidden access"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        404:
+          description: "Item not found"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        default:
+          description: "Unspecified error in request"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+  /update-secret-val:
+    post:
+      summary: "Update static secret value"
+      description: "Update static secret value\nOptions:\n  name -    Secret name\n\
+        \  value -    The new secret value\n  key -    The name of a key that used\
+        \ to encrypt the secret value (if empty, the account default protectionKey\
+        \ key will be used)\n  multiline -    The provided value is a multiline value\
+        \ (separated by '\\n')\n  token -    Access token"
+      operationId: "updateSecretVal"
+      parameters:
+      - name: "name"
+        in: "query"
+        description: "Secret name"
+        required: true
+        type: "string"
+        x-exportParamName: "Name"
+      - name: "value"
+        in: "query"
+        description: "The new secret value"
+        required: true
+        type: "string"
+        x-exportParamName: "Value"
+      - name: "key"
+        in: "query"
+        description: "The name of a key that used to encrypt the secret value (if\
+          \ empty, the account default protectionKey key will be used)"
+        required: false
+        type: "string"
+        x-exportParamName: "Key"
+        x-optionalDataType: "String"
+      - name: "multiline"
+        in: "query"
+        description: "The provided value is a multiline value (separated by '\\n')"
+        required: false
+        type: "boolean"
+        x-exportParamName: "Multiline"
+        x-optionalDataType: "Bool"
+      - name: "token"
+        in: "query"
+        description: "Access token"
+        required: true
+        type: "string"
+        x-exportParamName: "Token"
+      responses:
+        200:
+          description: "response"
+          schema:
+            $ref: "#/definitions/ReplyObj"
+        400:
+          description: "Invalid request"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        401:
+          description: "Unauthorized access"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        403:
+          description: "Forbidden access"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        404:
+          description: "Item not found"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        default:
+          description: "Unspecified error in request"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+  /upload-pkcs12:
+    post:
+      summary: "Upload a PKCS#12 key and certificates"
+      description: "Upload a PKCS#12 key and certificates\nOptions:\n  name -    Name\
+        \ of key to be created\n  in -    PKCS#12 input file (private key and certificate\
+        \ only)\n  passphrase -    Passphrase to unlock the pkcs#12 bundle\n  metadata\
+        \ -    A metadata about the key\n  split-level -    The number of fragments\
+        \ that the item will be split into\n  customer-frg-id -    The customer fragment\
+        \ ID that will be used to split the key (if empty, the key will be created\
+        \ independently of a customer fragment)\n  cert -    Path to a file that contain\
+        \ the certificate in a PEM format. If this parameter is not empty, the certificate\
+        \ will be taken from here and not from the PKCS#12 input file\n  token - \
+        \   Access token"
+      operationId: "uploadPkcs12"
+      parameters:
+      - name: "name"
+        in: "query"
+        description: "Name of key to be created"
+        required: true
+        type: "string"
+        x-exportParamName: "Name"
+      - name: "in"
+        in: "query"
+        description: "PKCS#12 input file (private key and certificate only)"
+        required: true
+        type: "string"
+        x-exportParamName: "In"
+      - name: "passphrase"
+        in: "query"
+        description: "Passphrase to unlock the pkcs#12 bundle"
+        required: true
+        type: "string"
+        x-exportParamName: "Passphrase"
+      - name: "metadata"
+        in: "query"
+        description: "A metadata about the key"
+        required: false
+        type: "string"
+        x-exportParamName: "Metadata"
+        x-optionalDataType: "String"
+      - name: "split-level"
+        in: "query"
+        description: "The number of fragments that the item will be split into"
+        required: false
+        type: "string"
+        x-exportParamName: "SplitLevel"
+        x-optionalDataType: "String"
+      - name: "customer-frg-id"
+        in: "query"
+        description: "The customer fragment ID that will be used to split the key\
+          \ (if empty, the key will be created independently of a customer fragment)"
+        required: false
+        type: "string"
+        x-exportParamName: "CustomerFrgId"
+        x-optionalDataType: "String"
+      - name: "cert"
+        in: "query"
+        description: "Path to a file that contain the certificate in a PEM format.\
+          \ If this parameter is not empty, the certificate will be taken from here\
+          \ and not from the PKCS#12 input file"
+        required: false
+        type: "string"
+        x-exportParamName: "Cert"
+        x-optionalDataType: "String"
+      - name: "token"
+        in: "query"
+        description: "Access token"
+        required: true
+        type: "string"
+        x-exportParamName: "Token"
+      responses:
+        200:
+          description: "response"
+          schema:
+            $ref: "#/definitions/ReplyObj"
+        400:
+          description: "Invalid request"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        401:
+          description: "Unauthorized access"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        403:
+          description: "Forbidden access"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        404:
+          description: "Item not found"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        default:
+          description: "Unspecified error in request"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+  /upload-rsa:
+    post:
+      summary: "Upload RSA key"
+      description: "Upload RSA key\nOptions:\n  name -    Name of key to be created\n\
+        \  alg -    Key type. options- [RSA1024, RSA2048]\n  rsa-key-file-path - \
+        \   RSA private key file path\n  metadata -    A metadata about the key\n\
+        \  split-level -    The number of fragments that the item will be split into\n\
+        \  customer-frg-id -    The customer fragment ID that will be used to split\
+        \ the key (if empty, the key will be created independently of a customer fragment)\n\
+        \  token -    Access token"
+      operationId: "uploadRsa"
+      parameters:
+      - name: "name"
+        in: "query"
+        description: "Name of key to be created"
+        required: true
+        type: "string"
+        x-exportParamName: "Name"
+      - name: "alg"
+        in: "query"
+        description: "Key type. options- [RSA1024, RSA2048]"
+        required: true
+        type: "string"
+        x-exportParamName: "Alg"
+      - name: "rsa-key-file-path"
+        in: "query"
+        description: "RSA private key file path"
+        required: true
+        type: "string"
+        x-exportParamName: "RsaKeyFilePath"
+      - name: "metadata"
+        in: "query"
+        description: "A metadata about the key"
+        required: false
+        type: "string"
+        x-exportParamName: "Metadata"
+        x-optionalDataType: "String"
+      - name: "split-level"
+        in: "query"
+        description: "The number of fragments that the item will be split into"
+        required: false
+        type: "string"
+        x-exportParamName: "SplitLevel"
+        x-optionalDataType: "String"
+      - name: "customer-frg-id"
+        in: "query"
+        description: "The customer fragment ID that will be used to split the key\
+          \ (if empty, the key will be created independently of a customer fragment)"
+        required: false
+        type: "string"
+        x-exportParamName: "CustomerFrgId"
+        x-optionalDataType: "String"
+      - name: "token"
+        in: "query"
+        description: "Access token"
+        required: true
+        type: "string"
+        x-exportParamName: "Token"
+      responses:
+        200:
+          description: "response"
+          schema:
+            $ref: "#/definitions/ReplyObj"
+        400:
+          description: "Invalid request"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        401:
+          description: "Unauthorized access"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        403:
+          description: "Forbidden access"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        404:
+          description: "Item not found"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        default:
+          description: "Unspecified error in request"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+  /verify-pkcs1:
+    post:
+      summary: "Verifies an RSA PKCS#1 v1.5 signature"
+      description: "Verifies an RSA PKCS#1 v1.5 signature\nOptions:\n  key-name -\
+        \    The name of the RSA key to use in the verification process\n  message\
+        \ -    The message to be verified\n  signature -    The message's signature\n\
+        \  token -    Access token"
+      operationId: "verifyPkcs1"
+      parameters:
+      - name: "key-name"
+        in: "query"
+        description: "The name of the RSA key to use in the verification process"
+        required: true
+        type: "string"
+        x-exportParamName: "KeyName"
+      - name: "message"
+        in: "query"
+        description: "The message to be verified"
+        required: true
+        type: "string"
+        x-exportParamName: "Message"
+      - name: "signature"
+        in: "query"
+        description: "The message's signature"
+        required: true
+        type: "string"
+        x-exportParamName: "Signature"
+      - name: "token"
+        in: "query"
+        description: "Access token"
+        required: true
+        type: "string"
+        x-exportParamName: "Token"
+      responses:
+        200:
+          description: "response"
+          schema:
+            $ref: "#/definitions/ReplyObj"
+        400:
+          description: "Invalid request"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        401:
+          description: "Unauthorized access"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        403:
+          description: "Forbidden access"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        404:
+          description: "Item not found"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+        default:
+          description: "Unspecified error in request"
+          schema:
+            $ref: "#/definitions/ErrorReplyObj"
+definitions:
+  ErrorReplyObj:
+    type: "object"
+    properties:
+      error:
+        type: "string"
+        description: "Internal error code"
+      message:
+        type: "string"
+        description: "Error message"
+    description: "Response with error description"
+  ReplyObj:
+    type: "object"
+    properties:
+      command:
+        type: "string"
+      response:
+        type: "object"
+        properties: {}
+      status:
+        type: "string"
+      token:
+        type: "string"
+    description: "Base response"
+    example:
+      response: "{}"
+      command: "command"
+      status: "status"
+      token: "token"
+responses:
+  BadRequestResponse:
+    description: "Invalid request"
+    schema:
+      $ref: "#/definitions/ErrorReplyObj"
+  ErrorResponse:
+    description: "Unspecified error in request"
+    schema:
+      $ref: "#/definitions/ErrorReplyObj"
+  ExpectationFailedResponse:
+    description: "Invalid request"
+    schema:
+      $ref: "#/definitions/ErrorReplyObj"
+  ForbiddenResponse:
+    description: "Forbidden access"
+    schema:
+      $ref: "#/definitions/ErrorReplyObj"
+  NotFoundResponse:
+    description: "Item not found"
+    schema:
+      $ref: "#/definitions/ErrorReplyObj"
+  Response:
+    description: "response"
+    schema:
+      $ref: "#/definitions/ReplyObj"
+  UnauthorizedResponse:
+    description: "Unauthorized access"
+    schema:
+      $ref: "#/definitions/ErrorReplyObj"
