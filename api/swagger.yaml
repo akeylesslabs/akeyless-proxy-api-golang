@@ -85,7 +85,7 @@ paths:
         \ to execute the CLI without the need for re-authentication"
       description: "Authenticate to the service and returns a token to be used as\
         \ a profile to execute the CLI without the need for re-authentication\nOptions:\n\
-        \  access-id -    Access ID\n  access-type -    Access Type (api_key/okta_saml/ldap)\n\
+        \  access-id -    Access ID\n  access-type -    Access Type (api_key/saml/ldap)\n\
         \  access-key -    Access key (relevant only for access-type=api_key)\n  ldap_proxy_url\
         \ -    Address URL for LDAP proxy (relevant only for access-type=ldap)"
       operationId: "auth"
@@ -98,7 +98,7 @@ paths:
         x-exportParamName: "AccessId"
       - name: "access-type"
         in: "query"
-        description: "Access Type (api_key/okta_saml/ldap)"
+        description: "Access Type (api_key/saml/ldap)"
         required: false
         type: "string"
         x-exportParamName: "AccessType"
@@ -146,7 +146,7 @@ paths:
     post:
       summary: "Configure client profile."
       description: "Configure client profile.\nOptions:\n  access-id -    Access ID\n\
-        \  access-key -    Access Key\n  access-type -    Access Type (api_key/azure_ad/okta_saml/ldap)\n\
+        \  access-key -    Access Key\n  access-type -    Access Type (api_key/azure_ad/saml/ldap)\n\
         \  ldap_proxy_url -    Address URL for ldap proxy (relevant only for access-type=ldap)\n\
         \  azure_ad_object_id -    Azure Active Directory ObjectId (relevant only\
         \ for access-type=azure_ad)"
@@ -167,7 +167,7 @@ paths:
         x-optionalDataType: "String"
       - name: "access-type"
         in: "query"
-        description: "Access Type (api_key/azure_ad/okta_saml/ldap)"
+        description: "Access Type (api_key/azure_ad/saml/ldap)"
         required: false
         type: "string"
         x-exportParamName: "AccessType"

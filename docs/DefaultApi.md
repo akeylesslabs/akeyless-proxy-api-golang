@@ -95,7 +95,7 @@ No authorization required
 > ReplyObj Auth(ctx, accessId, optional)
 Authenticate to the service and returns a token to be used as a profile to execute the CLI without the need for re-authentication
 
-Authenticate to the service and returns a token to be used as a profile to execute the CLI without the need for re-authentication Options:   access-id -    Access ID   access-type -    Access Type (api_key/okta_saml/ldap)   access-key -    Access key (relevant only for access-type=api_key)   ldap_proxy_url -    Address URL for LDAP proxy (relevant only for access-type=ldap)
+Authenticate to the service and returns a token to be used as a profile to execute the CLI without the need for re-authentication Options:   access-id -    Access ID   access-type -    Access Type (api_key/saml/ldap)   access-key -    Access key (relevant only for access-type=api_key)   ldap_proxy_url -    Address URL for LDAP proxy (relevant only for access-type=ldap)
 
 ### Required Parameters
 
@@ -111,7 +111,7 @@ Optional parameters are passed through a pointer to a AuthOpts struct
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 
- **accessType** | **optional.String**| Access Type (api_key/okta_saml/ldap) | 
+ **accessType** | **optional.String**| Access Type (api_key/saml/ldap) | 
  **accessKey** | **optional.String**| Access key (relevant only for access-type&#x3D;api_key) | 
  **ldapProxyUrl** | **optional.String**| Address URL for LDAP proxy (relevant only for access-type&#x3D;ldap) | 
 
@@ -134,7 +134,7 @@ No authorization required
 > ReplyObj Configure(ctx, accessId, optional)
 Configure client profile.
 
-Configure client profile. Options:   access-id -    Access ID   access-key -    Access Key   access-type -    Access Type (api_key/azure_ad/okta_saml/ldap)   ldap_proxy_url -    Address URL for ldap proxy (relevant only for access-type=ldap)   azure_ad_object_id -    Azure Active Directory ObjectId (relevant only for access-type=azure_ad)
+Configure client profile. Options:   access-id -    Access ID   access-key -    Access Key   access-type -    Access Type (api_key/azure_ad/saml/ldap)   ldap_proxy_url -    Address URL for ldap proxy (relevant only for access-type=ldap)   azure_ad_object_id -    Azure Active Directory ObjectId (relevant only for access-type=azure_ad)
 
 ### Required Parameters
 
@@ -151,7 +151,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 
  **accessKey** | **optional.String**| Access Key | 
- **accessType** | **optional.String**| Access Type (api_key/azure_ad/okta_saml/ldap) | 
+ **accessType** | **optional.String**| Access Type (api_key/azure_ad/saml/ldap) | 
  **ldapProxyUrl** | **optional.String**| Address URL for ldap proxy (relevant only for access-type&#x3D;ldap) | 
  **azureAdObjectId** | **optional.String**| Azure Active Directory ObjectId (relevant only for access-type&#x3D;azure_ad) | 
 
