@@ -2717,15 +2717,14 @@ definitions:
       command:
         type: "string"
       response:
-        type: "object"
-        properties: {}
+        type: "string"
       status:
         type: "string"
       token:
         type: "string"
     description: "Base response"
     example:
-      response: "{}"
+      response: "response"
       command: "command"
       status: "status"
       token: "token"

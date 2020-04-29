@@ -13,7 +13,7 @@ For more information, please visit [https://www.akeyless.io](https://www.akeyles
 ## Installation
 Put the package under your project folder and add the following in import:
 ```golang
-import "./akeyless-proxy-api"
+import "./akeyless_proxy_api"
 ```
 
 ## Documentation for API Endpoints

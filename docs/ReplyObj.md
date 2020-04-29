@@ -4,7 +4,7 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **Command** | **string** |  | [optional] [default to null]
-**Response** | [***interface{}**](interface{}.md) |  | [optional] [default to null]
+**Response** | **string** |  | [optional] [default to null]
 **Status** | **string** |  | [optional] [default to null]
 **Token** | **string** |  | [optional] [default to null]
 

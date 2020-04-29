@@ -13,7 +13,7 @@ package akeyless_proxy_api
 // Base response
 type ReplyObj struct {
 	Command string `json:"command,omitempty"`
-	Response *interface{} `json:"response,omitempty"`
+	Response string `json:"response,omitempty"`
 	Status string `json:"status,omitempty"`
 	Token string `json:"token,omitempty"`
 }
